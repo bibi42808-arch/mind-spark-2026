@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mind Spark 2026 - Registration</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:Arial;background:#0f172a;color:white;padding:20px}
+.card{background:white;color:black;padding:20px;border-radius:15px;max-width:400px;margin:auto}
+input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}
+button{width:100%;padding:14px;background:#4f46e5;color:white;border:none;border-radius:10px;font-size:16px;margin-top:10px;cursor:pointer}
+h1{text-align:center}
+#msg{text-align:center;font-weight:bold;margin-top:15px}
+</style>
+</head>
+<body>
+<h1>🧠 Mind Spark 2026</h1>
+<div class="card">
+<form id="registrationForm">
+<input id="team_name" placeholder="Team Name" required>
+<input id="leader_name" placeholder="Leader Name" required>
+<input id="phone" placeholder="Phone Number" required>
+<input id="email" type="email" placeholder="Email" required>
+<input id="member_2" placeholder="Member 2 Name">
+<input id="member_3" placeholder="Member 3 Name">
+<input id="member_4" placeholder="Member 4 Name">
+<button type="submit">Register Now</button>
+</form>
+<p id="msg"></p>
+</div>
+
+<script>
+const SUPABASE_URL = "https://icjympnpespxfsbqzhdf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_wLK_1rJskX_8TK_swj5B8A_QtMu57zq";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const form = document.getElementById("registrationForm");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  document.getElementById("msg").innerText = "Saving...";
+  const id = "MS2026-" + Date.now().toString().slice(-6);
+  const { error } = await supabaseClient.from("registrations").insert([{
+    registration_id: id,
+    team_name: document.getElementById("team_name").value,
+    leader_name: document.getElementById("leader_name").value,
+    phone: document.getElementById("phone").value,
+    email: document.getElementById("email").value,
+    member_2: document.getElementById("member_2").value,
+    member_3: document.getElementById("member_3").value,
+    member_4: document.getElementById("member_4").value
+  }]);
+  if (error){
+    document.getElementById("msg").innerText = "❌ Failed: " + error.message;
+  } else {
+    document.getElementById("msg").innerText = "✅ Success! ID: " + id;
+    alert("Registration Successful! Your ID: " + id);
+    form.reset();
+  }
+});
+</script>
+</body>
+</html>
